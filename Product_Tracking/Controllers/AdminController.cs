@@ -117,7 +117,7 @@ namespace Product_Tracking.Controllers
                 _db.UserRoles.Remove(user);
             }
             _db.SaveChanges();
-            return RedirectToAction("Users"); ;
+            return RedirectToAction("Users");
         }
         public ActionResult Edit(int id)
         {
@@ -135,6 +135,57 @@ namespace Product_Tracking.Controllers
             var rolenameid = _db.UserRoles.Where(a => a.UserId == tb.UserId).FirstOrDefault();
             pvm.RoleId = rolenameid.RoleId != null ? rolenameid.RoleId.Value : 0;
             return View(pvm);
+        }
+        [HttpPost, ActionName("Edit")]
+        public ActionResult Edit_user(UserViewModel uvm)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    tblUser tbluser = _db.tblUsers.Where(p => p.UserId == uvm.UserId).FirstOrDefault();
+                    UserRole user = _db.UserRoles.Where(p => p.UserId == uvm.UserId).FirstOrDefault();
+                    tbluser.Username = uvm.Username;
+                    tbluser.Password = uvm.Password;
+                    tbluser.PhoneNumber = uvm.PhoneNumber;
+                    tbluser.Address = uvm.Address;
+                    user.RoleId = uvm.RoleId;
+                    user.UserId = uvm.UserId;
+                    tbluser.Email = uvm.Email;
+                    HttpPostedFileBase fup = Request.Files["Photo"];
+                    if (fup != null)
+                    {
+                        //tbluser.Photo = fup.FileName;
+                        //if (tbluser.Photo == "")
+                        //{
+                        //    fup.SaveAs(Server.MapPath(null));
+                        //}
+                        //else
+                        //{
+                        //    fup.SaveAs(Server.MapPath("/Photo/" + fup.FileName));
+                        //}
+                        if (fup.FileName != "")
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Photo/" + uvm.Photo));
+                            tbluser.Photo = fup.FileName;
+                            fup.SaveAs(Server.MapPath("~/Photo/" + fup.FileName));
+                        }
+                        else
+                        {
+                            tbluser.Photo = uvm.Photo;
+                        }
+                    }
+                    _db.SaveChanges();
+                    ViewBag.Message = "User Created Successfully.";
+                    return RedirectToAction("users");
+
+                }
+                catch (Exception e)
+                {
+                    return View("Error", new HandleErrorInfo(e, "Admin", "Edit"));
+                }
+            }
+            return RedirectToAction("Edit");
         }
     }
 }
