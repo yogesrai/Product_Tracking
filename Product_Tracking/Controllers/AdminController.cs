@@ -133,7 +133,7 @@ namespace Product_Tracking.Controllers
             pvm.PhoneNumber = tb.PhoneNumber;
             pvm.Photo = tb.Photo;
             var rolenameid = _db.UserRoles.Where(a => a.UserId == tb.UserId).FirstOrDefault();
-            //pvm.RoleId = rolenameid.RoleId;
+            pvm.RoleId = rolenameid.RoleId != null ? rolenameid.RoleId.Value : 0;
             return View(pvm);
         }
     }
