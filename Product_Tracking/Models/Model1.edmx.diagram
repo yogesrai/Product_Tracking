@@ -4,10 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f5161afd86f642628722a0b210291625" Name="Diagram1">
-        <EntityTypeShape EntityType="Product_TrackingModel.tbl_Role" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Product_TrackingModel.tblUser" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Product_TrackingModel.UserRole" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+      <Diagram DiagramId="45dd24f6953f44d1914128fe19b1f55a" Name="Diagram1">
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_Deals" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_ProductCategory" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_ProductStore" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_Role" Width="1.5" PointX="5.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tbl_Store" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.tblUser" Width="1.5" PointX="5.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Product_TrackingModel.UserRole" Width="1.5" PointX="8" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="Product_TrackingModel.FK_tbl_Product_tbl_Deals" ManuallyRouted="false" />
+        <AssociationConnector Association="Product_TrackingModel.FK_tbl_Product_tbl_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="Product_TrackingModel.FK_tbl_Product_tbl_ProductCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="Product_TrackingModel.FK_tbl_ProductStore_tbl_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="Product_TrackingModel.FK_tbl_ProductStore_tbl_Store" ManuallyRouted="false" />
         <AssociationConnector Association="Product_TrackingModel.FK_UserRoles_tbl_Role" ManuallyRouted="false" />
         <AssociationConnector Association="Product_TrackingModel.FK_UserRoles_tblUser" ManuallyRouted="false" />
       </Diagram>

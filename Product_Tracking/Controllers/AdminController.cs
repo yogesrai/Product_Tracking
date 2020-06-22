@@ -50,7 +50,6 @@ namespace Product_Tracking.Controllers
         }
         [HttpPost]
         public ActionResult CreateUser(UserViewModel uvm)
-
         {
             if (ModelState.IsValid)
             {
@@ -186,6 +185,121 @@ namespace Product_Tracking.Controllers
                 }
             }
             return RedirectToAction("Edit");
+        }
+
+        public ActionResult Deals()
+        {
+            List<Deals> d = new List<Deals>();
+            var deals = _db.tbl_Deals.ToList();
+            foreach (tbl_Deals item in deals)
+            {
+                d.Add(new Deals() { DealsId = item.DealsId, DealsName = item.DealsName, DealsDiscription = item.DealsDiscription, DiscountPercent = item.DiscountPercent, StartDate = item.StartDate, EndDate = item.EndDate});
+            }
+                return View(d);
+        }
+        public ActionResult Deals_data()
+        {
+            return View();
+        }
+        [HttpPost/*, ActionName("InsertDeals")*/]
+        public ActionResult Deals_data(Deals d)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    tbl_Deals deals = new tbl_Deals();
+                    deals.DealsId = d.DealsId;
+                    deals.DealsName = d.DealsName;
+                    deals.DealsDiscription = d.DealsDiscription;
+                    deals.DiscountPercent = d.DiscountPercent;
+                    deals.StartDate = d.StartDate;
+                    //if (d.StartDate < d.EndDate)
+                    //{
+                    //    deals.StartDate = d.StartDate;
+                    //}
+                    //else
+                    //{
+                    //    //swal("Good job!", "You clicked the button!", "success");
+                    //    ViewBag.Message = "Success. You Clicked Button";
+                    //    return View();
+                    //}
+                    deals.EndDate = d.EndDate;
+                    //if (d.StartDate > d.EndDate)
+                    //{
+                    //    deals.EndDate = d.EndDate;
+                    //}
+                    //else
+                    //{
+
+                    //}                                       
+                    _db.tbl_Deals.Add(deals);
+                    _db.SaveChanges();
+                    ViewBag.Message = "Deals Created Successfully.";
+                    return RedirectToAction("Deals_data");
+
+                }
+                catch (Exception e)
+                {
+                    return View("Error", new HandleErrorInfo(e, "Admin", "CreateUser"));
+                }
+            }
+            return View();
+        }
+        public ActionResult deletedeals(int id)
+        {
+            tbl_Deals tb = _db.tbl_Deals.Where(u => u.DealsId == id).FirstOrDefault();
+            Deals uv = new Deals();
+            uv.DealsName = tb.DealsName;
+            uv.DealsDiscription = tb.DealsDiscription;
+            uv.DiscountPercent = tb.DiscountPercent;
+            uv.StartDate = tb.StartDate;
+            uv.EndDate = tb.EndDate;
+            return View(uv);
+        }
+        [HttpPost, ActionName("deletedeals")]
+        public ActionResult deletedeal(int id)
+        {
+            tbl_Deals tb = _db.tbl_Deals.Where(u => u.DealsId == id).FirstOrDefault();
+            _db.tbl_Deals.Remove(tb);
+            _db.SaveChanges();
+            return RedirectToAction("Deals");
+        }
+        public ActionResult EditDeals(int id)
+        {
+            tbl_Deals tb = _db.tbl_Deals.Where(p => p.DealsId == id).FirstOrDefault();
+            Deals pvm = new Deals();
+            pvm.DealsId = tb.DealsId;
+            pvm.DealsName = tb.DealsName;
+            pvm.DealsDiscription = tb.DealsDiscription;
+            pvm.DiscountPercent = tb.DiscountPercent;
+            pvm.StartDate = tb.StartDate;
+            pvm.EndDate = tb.EndDate;            
+            return View(pvm);
+        }
+        [HttpPost, ActionName("EditDeals")]
+        public ActionResult EditDeal(Deals d)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    tbl_Deals deal = _db.tbl_Deals.Where(p => p.DealsId == d.DealsId).FirstOrDefault();
+                    deal.DealsName = d.DealsName;
+                    deal.DealsDiscription = d.DealsDiscription;
+                    deal.DiscountPercent = d.DiscountPercent;
+                    deal.StartDate = d.StartDate;
+                    deal.EndDate = d.EndDate;
+                    _db.SaveChanges();
+                    ViewBag.Message = "Deal Updated Successfully.";
+                    return RedirectToAction("Deals");
+                }
+                catch (Exception e)
+                {
+                    return View("Error", new HandleErrorInfo(e, "Admin", "EditDeals"));
+                }
+            }
+            return RedirectToAction("Deals");
         }
     }
 }

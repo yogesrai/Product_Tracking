@@ -5,12 +5,58 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Product_TrackingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Deals">
+          <Key>
+            <PropertyRef Name="DealsId" />
+          </Key>
+          <Property Name="DealsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DealsName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DealsDiscription" Type="nvarchar" MaxLength="150" />
+          <Property Name="DiscountPercent" Type="int" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+        </EntityType>
+        <EntityType Name="tbl_Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductDescription" Type="nvarchar" MaxLength="150" />
+          <Property Name="ProductPackingDate" Type="date" />
+          <Property Name="ProductExpireDate" Type="date" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="DealsId" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_ProductCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_ProductStore">
+          <Key>
+            <PropertyRef Name="ProductStoreId" />
+          </Key>
+          <Property Name="ProductStoreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="StoreId" Type="int" />
+        </EntityType>
         <EntityType Name="tbl_Role">
           <Key>
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tbl_Store">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreName" Type="nvarchar" MaxLength="50" />
+          <Property Name="StoreLocation" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -32,6 +78,66 @@
           <Property Name="UserId" Type="int" />
           <Property Name="RoleId" Type="int" />
         </EntityType>
+        <Association Name="FK_tbl_Product_tbl_Deals">
+          <End Role="tbl_Deals" Type="Self.tbl_Deals" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Deals">
+              <PropertyRef Name="DealsId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="DealsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Product_tbl_Product">
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="1" />
+          <End Role="tbl_Product1" Type="Self.tbl_Product" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tbl_Product1">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Product_tbl_ProductCategory">
+          <End Role="tbl_ProductCategory" Type="Self.tbl_ProductCategory" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_ProductCategory">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_ProductStore_tbl_Product">
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="0..1" />
+          <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tbl_ProductStore">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_ProductStore_tbl_Store">
+          <End Role="tbl_Store" Type="Self.tbl_Store" Multiplicity="0..1" />
+          <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="tbl_ProductStore">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRoles_tbl_Role">
           <End Role="tbl_Role" Type="Self.tbl_Role" Multiplicity="0..1" />
           <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
@@ -57,9 +163,34 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Product_TrackingModelStoreContainer">
+          <EntitySet Name="tbl_Deals" EntityType="Self.tbl_Deals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ProductCategory" EntityType="Self.tbl_ProductCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ProductStore" EntityType="Self.tbl_ProductStore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Role" EntityType="Self.tbl_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Store" EntityType="Self.tbl_Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbl_Product_tbl_Deals" Association="Self.FK_tbl_Product_tbl_Deals">
+            <End Role="tbl_Deals" EntitySet="tbl_Deals" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_Product" Association="Self.FK_tbl_Product_tbl_Product">
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+            <End Role="tbl_Product1" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_ProductCategory" Association="Self.FK_tbl_Product_tbl_ProductCategory">
+            <End Role="tbl_ProductCategory" EntitySet="tbl_ProductCategory" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_ProductStore_tbl_Product" Association="Self.FK_tbl_ProductStore_tbl_Product">
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+            <End Role="tbl_ProductStore" EntitySet="tbl_ProductStore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_ProductStore_tbl_Store" Association="Self.FK_tbl_ProductStore_tbl_Store">
+            <End Role="tbl_Store" EntitySet="tbl_Store" />
+            <End Role="tbl_ProductStore" EntitySet="tbl_ProductStore" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserRoles_tbl_Role" Association="Self.FK_UserRoles_tbl_Role">
             <End Role="tbl_Role" EntitySet="tbl_Role" />
             <End Role="UserRoles" EntitySet="UserRoles" />
@@ -74,6 +205,53 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Product_TrackingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Deals">
+          <Key>
+            <PropertyRef Name="DealsId" />
+          </Key>
+          <Property Name="DealsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DealsName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DealsDiscription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountPercent" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="tbl_Product" Relationship="Self.FK_tbl_Product_tbl_Deals" FromRole="tbl_Deals" ToRole="tbl_Product" />
+        </EntityType>
+        <EntityType Name="tbl_Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescription" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ProductPackingDate" Type="DateTime" Precision="0" />
+          <Property Name="ProductExpireDate" Type="DateTime" Precision="0" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="DealsId" Type="Int32" />
+          <NavigationProperty Name="tbl_Deals" Relationship="Self.FK_tbl_Product_tbl_Deals" FromRole="tbl_Product" ToRole="tbl_Deals" />
+          <NavigationProperty Name="tbl_Product1" Relationship="Self.FK_tbl_Product_tbl_Product" FromRole="tbl_Product" ToRole="tbl_Product1" />
+          <NavigationProperty Name="tbl_Product2" Relationship="Self.FK_tbl_Product_tbl_Product" FromRole="tbl_Product1" ToRole="tbl_Product" />
+          <NavigationProperty Name="tbl_ProductCategory" Relationship="Self.FK_tbl_Product_tbl_ProductCategory" FromRole="tbl_Product" ToRole="tbl_ProductCategory" />
+          <NavigationProperty Name="tbl_ProductStore" Relationship="Self.FK_tbl_ProductStore_tbl_Product" FromRole="tbl_Product" ToRole="tbl_ProductStore" />
+        </EntityType>
+        <EntityType Name="tbl_ProductCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_Product" Relationship="Self.FK_tbl_Product_tbl_ProductCategory" FromRole="tbl_ProductCategory" ToRole="tbl_Product" />
+        </EntityType>
+        <EntityType Name="tbl_ProductStore">
+          <Key>
+            <PropertyRef Name="ProductStoreId" />
+          </Key>
+          <Property Name="ProductStoreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="StoreId" Type="Int32" />
+          <NavigationProperty Name="tbl_Product" Relationship="Self.FK_tbl_ProductStore_tbl_Product" FromRole="tbl_ProductStore" ToRole="tbl_Product" />
+          <NavigationProperty Name="tbl_Store" Relationship="Self.FK_tbl_ProductStore_tbl_Store" FromRole="tbl_ProductStore" ToRole="tbl_Store" />
+        </EntityType>
         <EntityType Name="tbl_Role">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -81,6 +259,15 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_tbl_Role" FromRole="tbl_Role" ToRole="UserRoles" />
+        </EntityType>
+        <EntityType Name="tbl_Store">
+          <Key>
+            <PropertyRef Name="StoreId" />
+          </Key>
+          <Property Name="StoreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StoreLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_ProductStore" Relationship="Self.FK_tbl_ProductStore_tbl_Store" FromRole="tbl_Store" ToRole="tbl_ProductStore" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -105,6 +292,66 @@
           <NavigationProperty Name="tbl_Role" Relationship="Self.FK_UserRoles_tbl_Role" FromRole="UserRoles" ToRole="tbl_Role" />
           <NavigationProperty Name="tblUser" Relationship="Self.FK_UserRoles_tblUser" FromRole="UserRoles" ToRole="tblUser" />
         </EntityType>
+        <Association Name="FK_tbl_Product_tbl_Deals">
+          <End Role="tbl_Deals" Type="Self.tbl_Deals" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Deals">
+              <PropertyRef Name="DealsId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="DealsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Product_tbl_Product">
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="1" />
+          <End Role="tbl_Product1" Type="Self.tbl_Product" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tbl_Product1">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Product_tbl_ProductCategory">
+          <End Role="tbl_ProductCategory" Type="Self.tbl_ProductCategory" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_ProductCategory">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_ProductStore_tbl_Product">
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="0..1" />
+          <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="tbl_ProductStore">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_ProductStore_tbl_Store">
+          <End Role="tbl_Store" Type="Self.tbl_Store" Multiplicity="0..1" />
+          <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Store">
+              <PropertyRef Name="StoreId" />
+            </Principal>
+            <Dependent Role="tbl_ProductStore">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRoles_tbl_Role">
           <End Role="tbl_Role" Type="Self.tbl_Role" Multiplicity="0..1" />
           <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
@@ -130,9 +377,34 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Product_TrackingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Deals" EntityType="Self.tbl_Deals" />
+          <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" />
+          <EntitySet Name="tbl_ProductCategory" EntityType="Self.tbl_ProductCategory" />
+          <EntitySet Name="tbl_ProductStore" EntityType="Self.tbl_ProductStore" />
           <EntitySet Name="tbl_Role" EntityType="Self.tbl_Role" />
+          <EntitySet Name="tbl_Store" EntityType="Self.tbl_Store" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <AssociationSet Name="FK_tbl_Product_tbl_Deals" Association="Self.FK_tbl_Product_tbl_Deals">
+            <End Role="tbl_Deals" EntitySet="tbl_Deals" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_Product" Association="Self.FK_tbl_Product_tbl_Product">
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+            <End Role="tbl_Product1" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_ProductCategory" Association="Self.FK_tbl_Product_tbl_ProductCategory">
+            <End Role="tbl_ProductCategory" EntitySet="tbl_ProductCategory" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_ProductStore_tbl_Product" Association="Self.FK_tbl_ProductStore_tbl_Product">
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+            <End Role="tbl_ProductStore" EntitySet="tbl_ProductStore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_ProductStore_tbl_Store" Association="Self.FK_tbl_ProductStore_tbl_Store">
+            <End Role="tbl_Store" EntitySet="tbl_Store" />
+            <End Role="tbl_ProductStore" EntitySet="tbl_ProductStore" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserRoles_tbl_Role" Association="Self.FK_UserRoles_tbl_Role">
             <End Role="tbl_Role" EntitySet="tbl_Role" />
             <End Role="UserRoles" EntitySet="UserRoles" />
@@ -148,11 +420,62 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Product_TrackingModelStoreContainer" CdmEntityContainer="Product_TrackingEntities">
+          <EntitySetMapping Name="tbl_Deals">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_Deals">
+              <MappingFragment StoreEntitySet="tbl_Deals">
+                <ScalarProperty Name="DealsId" ColumnName="DealsId" />
+                <ScalarProperty Name="DealsName" ColumnName="DealsName" />
+                <ScalarProperty Name="DealsDiscription" ColumnName="DealsDiscription" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Product">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_Product">
+              <MappingFragment StoreEntitySet="tbl_Product">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="ProductPackingDate" ColumnName="ProductPackingDate" />
+                <ScalarProperty Name="ProductExpireDate" ColumnName="ProductExpireDate" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="DealsId" ColumnName="DealsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ProductCategory">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_ProductCategory">
+              <MappingFragment StoreEntitySet="tbl_ProductCategory">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ProductStore">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_ProductStore">
+              <MappingFragment StoreEntitySet="tbl_ProductStore">
+                <ScalarProperty Name="ProductStoreId" ColumnName="ProductStoreId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Role">
             <EntityTypeMapping TypeName="Product_TrackingModel.tbl_Role">
               <MappingFragment StoreEntitySet="tbl_Role">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Store">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_Store">
+              <MappingFragment StoreEntitySet="tbl_Store">
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="StoreLocation" ColumnName="StoreLocation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

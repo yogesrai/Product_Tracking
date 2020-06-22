@@ -1,0 +1,89 @@
+﻿@model Product_Tracking.Models.ViewModel.Deals
+
+@{
+    ViewBag.Title = "EditDeals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="#">
+                        <em class="fa fa-home"></em>
+                    </a>
+                </li>
+                <li class="active">Create Deals</li>
+            </ol>
+        </div><!--/.row-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Create Deals</h1>
+            </div>
+        </div><!--/.row-->
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.DealsId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DealsName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DealsName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DealsName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DealsDiscription, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.DealsDiscription, new { @class = "form-control" })
+                        @*@Html.EditorFor(model => model.DealsDiscription, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.DealsDiscription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DiscountPercent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DiscountPercent, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DiscountPercent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.StartDate, new { @class = "date-picker" })
+                        @*@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.EndDate, new { @class = "date-picker" })
+                        @*@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        @Html.ActionLink("NO", "Deals", "Admin", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+
+    <div>
+        @Html.ActionLink("Back to List", "Deals","Admin",null,new { @class = "btn btn-primary" })
+    </div>
+    </div>

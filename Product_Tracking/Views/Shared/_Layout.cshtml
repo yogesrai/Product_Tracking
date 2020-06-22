@@ -11,7 +11,7 @@
 
     <!--Custom Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -105,10 +105,10 @@
     <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
         <div class="profile-sidebar">
             <div class="profile-userpic">
-                
+
                 <img src="~/Photo/@Session["Photo"]" class="img-responsive" alt="">
                 @*<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">*@
-                
+
             </div>
             <div class="profile-usertitle">
                 <div class="profile-usertitle-name">@Session["fullname"].ToString()</div>
@@ -125,7 +125,7 @@
         <ul class="nav menu">
             <li class="active"><a href="@Url.Action("Index","Admin")"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
             <li><a href="@Url.Action("users","Admin")"><em class="fa fa-calendar">&nbsp;</em> User List</a></li>
-            <li><a href="charts.html"><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
+            <li><a href="@Url.Action("Deals","Admin")"><em class="fa fa-bar-chart">&nbsp;</em> Deals</a></li>
             <li><a href="elements.html"><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
             <li><a href="panels.html"><em class="fa fa-clone">&nbsp;</em> Alerts &amp; Panels</a></li>
             <li class="parent ">
@@ -163,7 +163,7 @@
     <script src="~/js/bootstrap-datepicker.js"></script>
     <script src="~/js/custom.js"></script>
     <script>
-    window.onload = function () {
+        window.onload = function () {
             var chart1 = document.getElementById("line-chart").getContext("2d");
             window.myLine = new Chart(chart1).Line(lineChartData, {
                 responsive: true,
@@ -172,7 +172,12 @@
                 scaleFontColor: "#c5c7cc"
             });
         };</script>
-
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element
+            $('.date-picker').datepicker();
+        })
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
