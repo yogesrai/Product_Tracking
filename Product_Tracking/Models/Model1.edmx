@@ -27,6 +27,7 @@
           <Property Name="ProductExpireDate" Type="date" />
           <Property Name="CategoryId" Type="int" />
           <Property Name="DealsId" Type="int" />
+          <Property Name="StatusId" Type="int" />
         </EntityType>
         <EntityType Name="tbl_ProductCategory">
           <Key>
@@ -34,6 +35,13 @@
           </Key>
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_ProductStatus">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tbl_ProductStore">
           <Key>
@@ -57,6 +65,7 @@
           <Property Name="StoreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StoreName" Type="nvarchar" MaxLength="50" />
           <Property Name="StoreLocation" Type="nvarchar" MaxLength="50" />
+          <Property Name="StoreCapacity" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -114,6 +123,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_Product_tbl_ProductStatus">
+          <End Role="tbl_ProductStatus" Type="Self.tbl_ProductStatus" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_ProductStatus">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_ProductStore_tbl_Product">
           <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="0..1" />
           <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
@@ -166,6 +187,7 @@
           <EntitySet Name="tbl_Deals" EntityType="Self.tbl_Deals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_ProductCategory" EntityType="Self.tbl_ProductCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ProductStatus" EntityType="Self.tbl_ProductStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_ProductStore" EntityType="Self.tbl_ProductStore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Role" EntityType="Self.tbl_Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Store" EntityType="Self.tbl_Store" Schema="dbo" store:Type="Tables" />
@@ -181,6 +203,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_tbl_Product_tbl_ProductCategory" Association="Self.FK_tbl_Product_tbl_ProductCategory">
             <End Role="tbl_ProductCategory" EntitySet="tbl_ProductCategory" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_ProductStatus" Association="Self.FK_tbl_Product_tbl_ProductStatus">
+            <End Role="tbl_ProductStatus" EntitySet="tbl_ProductStatus" />
             <End Role="tbl_Product" EntitySet="tbl_Product" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_ProductStore_tbl_Product" Association="Self.FK_tbl_ProductStore_tbl_Product">
@@ -228,10 +254,12 @@
           <Property Name="ProductExpireDate" Type="DateTime" Precision="0" />
           <Property Name="CategoryId" Type="Int32" />
           <Property Name="DealsId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
           <NavigationProperty Name="tbl_Deals" Relationship="Self.FK_tbl_Product_tbl_Deals" FromRole="tbl_Product" ToRole="tbl_Deals" />
           <NavigationProperty Name="tbl_Product1" Relationship="Self.FK_tbl_Product_tbl_Product" FromRole="tbl_Product" ToRole="tbl_Product1" />
           <NavigationProperty Name="tbl_Product2" Relationship="Self.FK_tbl_Product_tbl_Product" FromRole="tbl_Product1" ToRole="tbl_Product" />
           <NavigationProperty Name="tbl_ProductCategory" Relationship="Self.FK_tbl_Product_tbl_ProductCategory" FromRole="tbl_Product" ToRole="tbl_ProductCategory" />
+          <NavigationProperty Name="tbl_ProductStatus" Relationship="Self.FK_tbl_Product_tbl_ProductStatus" FromRole="tbl_Product" ToRole="tbl_ProductStatus" />
           <NavigationProperty Name="tbl_ProductStore" Relationship="Self.FK_tbl_ProductStore_tbl_Product" FromRole="tbl_Product" ToRole="tbl_ProductStore" />
         </EntityType>
         <EntityType Name="tbl_ProductCategory">
@@ -241,6 +269,14 @@
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbl_Product" Relationship="Self.FK_tbl_Product_tbl_ProductCategory" FromRole="tbl_ProductCategory" ToRole="tbl_Product" />
+        </EntityType>
+        <EntityType Name="tbl_ProductStatus">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tbl_Product" Relationship="Self.FK_tbl_Product_tbl_ProductStatus" FromRole="tbl_ProductStatus" ToRole="tbl_Product" />
         </EntityType>
         <EntityType Name="tbl_ProductStore">
           <Key>
@@ -267,6 +303,7 @@
           <Property Name="StoreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StoreName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StoreLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StoreCapacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tbl_ProductStore" Relationship="Self.FK_tbl_ProductStore_tbl_Store" FromRole="tbl_Store" ToRole="tbl_ProductStore" />
         </EntityType>
         <EntityType Name="tblUser">
@@ -328,6 +365,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_Product_tbl_ProductStatus">
+          <End Role="tbl_ProductStatus" Type="Self.tbl_ProductStatus" Multiplicity="0..1" />
+          <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_ProductStatus">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="tbl_Product">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_ProductStore_tbl_Product">
           <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="0..1" />
           <End Role="tbl_ProductStore" Type="Self.tbl_ProductStore" Multiplicity="*" />
@@ -380,6 +429,7 @@
           <EntitySet Name="tbl_Deals" EntityType="Self.tbl_Deals" />
           <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" />
           <EntitySet Name="tbl_ProductCategory" EntityType="Self.tbl_ProductCategory" />
+          <EntitySet Name="tbl_ProductStatus" EntityType="Self.tbl_ProductStatus" />
           <EntitySet Name="tbl_ProductStore" EntityType="Self.tbl_ProductStore" />
           <EntitySet Name="tbl_Role" EntityType="Self.tbl_Role" />
           <EntitySet Name="tbl_Store" EntityType="Self.tbl_Store" />
@@ -395,6 +445,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_tbl_Product_tbl_ProductCategory" Association="Self.FK_tbl_Product_tbl_ProductCategory">
             <End Role="tbl_ProductCategory" EntitySet="tbl_ProductCategory" />
+            <End Role="tbl_Product" EntitySet="tbl_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Product_tbl_ProductStatus" Association="Self.FK_tbl_Product_tbl_ProductStatus">
+            <End Role="tbl_ProductStatus" EntitySet="tbl_ProductStatus" />
             <End Role="tbl_Product" EntitySet="tbl_Product" />
           </AssociationSet>
           <AssociationSet Name="FK_tbl_ProductStore_tbl_Product" Association="Self.FK_tbl_ProductStore_tbl_Product">
@@ -442,6 +496,7 @@
                 <ScalarProperty Name="ProductExpireDate" ColumnName="ProductExpireDate" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="DealsId" ColumnName="DealsId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -450,6 +505,14 @@
               <MappingFragment StoreEntitySet="tbl_ProductCategory">
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ProductStatus">
+            <EntityTypeMapping TypeName="Product_TrackingModel.tbl_ProductStatus">
+              <MappingFragment StoreEntitySet="tbl_ProductStatus">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -476,6 +539,7 @@
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="StoreName" ColumnName="StoreName" />
                 <ScalarProperty Name="StoreLocation" ColumnName="StoreLocation" />
+                <ScalarProperty Name="StoreCapacity" ColumnName="StoreCapacity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

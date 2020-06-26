@@ -51,14 +51,14 @@
                         @Html.HiddenFor(modelItem => item.DealsId)
                         @Html.DisplayFor(modelItem => item.DealsName)
                     </td>
-                    <td>
+                    <td width="20%">
                         @Html.DisplayFor(modelItem => item.DealsDiscription)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DiscountPercent)
+                        @Html.DisplayFor(modelItem => item.DiscountPercent)<text>%</text>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
+                        @(item.StartDate.Value.ToString("yyyy-MM-dd"))
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.EndDate)

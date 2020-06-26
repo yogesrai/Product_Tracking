@@ -12,20 +12,18 @@ namespace Product_Tracking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_Store
+    public partial class tbl_ProductStatus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbl_Store()
+        public tbl_ProductStatus()
         {
-            this.tbl_ProductStore = new HashSet<tbl_ProductStore>();
+            this.tbl_Product = new HashSet<tbl_Product>();
         }
     
-        public int StoreId { get; set; }
-        public string StoreName { get; set; }
-        public string StoreLocation { get; set; }
-        public string StoreCapacity { get; set; }
+        public int StatusId { get; set; }
+        public string StatusName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_ProductStore> tbl_ProductStore { get; set; }
+        public virtual ICollection<tbl_Product> tbl_Product { get; set; }
     }
 }

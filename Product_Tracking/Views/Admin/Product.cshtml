@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Product_Tracking.Models.ViewModel.ProductViewModel>
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="#">
+                        <em class="fa fa-home"></em>
+                    </a>
+                </li>
+                <li class="active">Product List</li>
+            </ol>
+        </div><!--/.row-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Product List</h1>
+            </div>
+        </div><!--/.row-->
+        <p>
+            @Html.ActionLink("Create New", "InsertProduct", "Admin", null, new { @class = "btn btn-primary" })
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DealsName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductPackingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductExpireDate)
+                </th>
+                @*<th>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DealsId)
+        </th>*@
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DealsName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductPackingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductExpireDate)
+            </td>
+            @*<td>
+            @Html.DisplayFor(modelItem => item.CategoryId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DealsId)
+        </td>*@
+            <td>
+                @Html.ActionLink("Edit", "EditProducts", new { id = item.ProductId }, new { @class = "btn btn-info" }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.DealsId }, new { @class = "btn btn-success" }) |*@
+                @Html.ActionLink("Delete", "deleteProduct", new { id = item.ProductId }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+            }
+
+        </table>
+    </div>

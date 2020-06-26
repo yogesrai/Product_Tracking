@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Product_Tracking.Models.ViewModel.StoreViewModel>
+
+@{
+    ViewBag.Title = "Store";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="#">
+                        <em class="fa fa-home"></em>
+                    </a>
+                </li>
+                <li class="active">List Store</li>
+            </ol>
+        </div><!--/.row-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">List Store</h1>
+            </div>
+        </div><!--/.row-->
+        <p>
+            @Html.ActionLink("Create New", "InsertStore", "Admin", null, new { @class = "btn btn-primary" })
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreLocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreCapacity)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StoreCapacity)<text>Kg</text>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditStore", new { id = item.StoreId }, new { @class = "btn btn-info" }) |
+                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                @Html.ActionLink("Delete", "DeleteStore", new { id = item.StoreId }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+            }
+
+        </table>
+    </div>

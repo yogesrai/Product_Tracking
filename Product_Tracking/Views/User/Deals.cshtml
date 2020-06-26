@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Product_Tracking.Models.ViewModel.Deals>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Deals</title>
+</head>
+<body>
+   <table class="table">
+        <tr class="info">
+            <th>
+                @Html.DisplayNameFor(model => model.DealsName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DealsDiscription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr class="danger">
+            <td>
+                @Html.DisplayFor(modelItem => item.DealsName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DealsDiscription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>            
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

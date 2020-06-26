@@ -27,11 +27,11 @@ namespace Product_Tracking.Controllers
                 if (users.Username == l.Username && users.Password == l.Password)
                 {
                     var userrole = _db.UserRoles.Where(a => a.UserId == users.UserId).FirstOrDefault();
-
                     if (userrole.RoleId == 4)
                     {
                         Session.Add("fullname", users.Username);
                         Session["Photo"] = users.Photo;
+                        Session["email"] = users.Email;
                         FormsAuthentication.SetAuthCookie(l.Username, true);
                         if (Url.IsLocalUrl(ReturnUrl))
                         {
@@ -39,7 +39,7 @@ namespace Product_Tracking.Controllers
                         }
                         else
                         {                            
-                            return RedirectToAction("Index", "Admin");
+                            return RedirectToAction("Index", "Admin",new { loginStatus=true});
                         }
                     }
                     else if (userrole.RoleId == 3)
@@ -52,18 +52,20 @@ namespace Product_Tracking.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "User");
+                            return RedirectToAction("Index", "User",new { loginStatus = true });
                         }
                     }
                 }
             }
             else
             {
+                if (Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
                 ModelState.AddModelError("", "Invalid User");
             }
-
             return View();
-
         }
         public ActionResult Signup()
         {
@@ -109,22 +111,6 @@ namespace Product_Tracking.Controllers
             }
             return View();
         }
-        
-        //create user
-        //public JsonResult AddUser(tblUser tbl_Users)
-        //{
-        //    try
-        //    {
-        //        //tbl_Users.RoleId = 1;
-        //        _db.tblUsers.Add(tbl_Users);
-        //        _db.SaveChanges();
-        //        return Json(new { Status = true, msg = "User Created Succesfully" }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { Status = false, msg = ex.ToString() }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
         [Authorize]
         public ActionResult LogOut()
         {

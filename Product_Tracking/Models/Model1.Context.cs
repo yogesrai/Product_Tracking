@@ -28,6 +28,7 @@ namespace Product_Tracking.Models
         public virtual DbSet<tbl_Deals> tbl_Deals { get; set; }
         public virtual DbSet<tbl_Product> tbl_Product { get; set; }
         public virtual DbSet<tbl_ProductCategory> tbl_ProductCategory { get; set; }
+        public virtual DbSet<tbl_ProductStatus> tbl_ProductStatus { get; set; }
         public virtual DbSet<tbl_ProductStore> tbl_ProductStore { get; set; }
         public virtual DbSet<tbl_Role> tbl_Role { get; set; }
         public virtual DbSet<tbl_Store> tbl_Store { get; set; }

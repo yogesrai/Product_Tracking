@@ -27,11 +27,13 @@ namespace Product_Tracking.Models
         public Nullable<System.DateTime> ProductExpireDate { get; set; }
         public Nullable<int> CategoryId { get; set; }
         public Nullable<int> DealsId { get; set; }
+        public Nullable<int> StatusId { get; set; }
     
         public virtual tbl_Deals tbl_Deals { get; set; }
         public virtual tbl_Product tbl_Product1 { get; set; }
         public virtual tbl_Product tbl_Product2 { get; set; }
         public virtual tbl_ProductCategory tbl_ProductCategory { get; set; }
+        public virtual tbl_ProductStatus tbl_ProductStatus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_ProductStore> tbl_ProductStore { get; set; }
     }
