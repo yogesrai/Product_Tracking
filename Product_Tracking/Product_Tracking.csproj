@@ -180,7 +180,6 @@
     <Compile Include="Models\ViewModel\CategoryViewModel.cs" />
     <Compile Include="Models\ViewModel\Deals.cs" />
     <Compile Include="Models\ViewModel\LoginViewModel.cs" />
-    <Compile Include="Models\ViewModel\MailViewModel.cs" />
     <Compile Include="Models\ViewModel\ProductViewModel.cs" />
     <Compile Include="Models\ViewModel\StatusViewModel.cs" />
     <Compile Include="Models\ViewModel\StoreViewModel.cs" />
@@ -197,6 +196,7 @@
     <Content Include="css\datepicker.css" />
     <Content Include="css\datepicker3.css" />
     <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\jquery-ui.min.css" />
     <Content Include="css\jstarbox.css" />
     <Content Include="css\main.css" />
     <Content Include="css\style.css" />
@@ -417,6 +417,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Deals.cshtml" />
     <Content Include="Views\Admin\EditProducts.cshtml" />
+    <Content Include="Views\User\Store.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -18,6 +18,7 @@ namespace Product_Tracking.Models.ViewModel
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,20}$", ErrorMessage = "Password must contain minimum 8 character having at least 1 Lower Case, Upper Case, Numeric")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "ConfirmPassword Required!")]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
@@ -32,7 +33,7 @@ namespace Product_Tracking.Models.ViewModel
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Wrong mobile")]
         public string PhoneNumber { get; set; }
 
-        [Required(ErrorMessage = "PhoneNumber Required!")]
+        [Required(ErrorMessage = "Address Required!")]
         public string Address { get; set; }
 
         public string Photo { get; set; }

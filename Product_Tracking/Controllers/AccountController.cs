@@ -84,6 +84,9 @@ namespace Product_Tracking.Controllers
                     tbluser.PhoneNumber = uvm.PhoneNumber;
                     tbluser.Address = uvm.Address;
                     tbluser.Email = uvm.Email;
+                    UserRole user = new UserRole();
+                    user.RoleId = 3;
+                    user.UserId = uvm.UserId;
                     HttpPostedFileBase fup = Request.Files["Photo"];
                     if (fup != null)
                     {
@@ -99,6 +102,7 @@ namespace Product_Tracking.Controllers
                     }
                     
                         _db.tblUsers.Add(tbluser);
+                        _db.UserRoles.Add(user);
                         _db.SaveChanges();
                         ViewBag.Message = "User Created Successfully.";
                         return RedirectToAction("Signup");

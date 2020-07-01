@@ -79,8 +79,12 @@
             </div>
             <div class="head-t">
                 <ul class="card">
-                    <li><@Url.Action("Signup","Account")"><i class="fa fa-arrow-right" aria-hidden="true"></i>Register</a></li>
-                    <li><a href="@Url.Action("Logout","Account")"><i class="fa fa-file-text-o" aria-hidden="true"></i>Logout</a></li>
+                    <li><a href="@Url.Action("Signup","Account")"><i class="fa fa-arrow-right" aria-hidden="true"></i>Register</a></li>
+                    <li><a href="@Url.Action("Login","Account")"><i class="fa fa-file-text-o" aria-hidden="true"></i>Signup</a></li>
+                    @if (@Session["fullname"]!=null)
+                    {
+                        <li><a href="@Url.Action("LogOut","User")"><i class="fa fa-file-text-o" aria-hidden="true"></i>LogOut</a></li>
+                    }
                 </ul>
             </div>
 
@@ -274,7 +278,7 @@
     </div>
 
     <!--content-->
-    <div class="product">
+    <div>
         <div class="container">
             <div class="spec ">
                 <h3>Special Deals</h3>
@@ -287,6 +291,22 @@
             @Html.Action("Deals")
         </div>
     </div>
+
+    @if(@Session["fullname"]!=null){
+    <div>
+        <div class="container">
+            <div class="spec ">
+                <h3>Our Store</h3>
+                <div class="ser-t">
+                    <b></b>
+                    <span><i></i></span>
+                    <b class="line"></b>
+                </div>
+            </div>
+            @Html.Action("Store")
+        </div>
+    </div>
+    }
     <!--footer-->
     <div class="footer">
         <div class="container">
@@ -356,9 +376,9 @@
             $().UItoTop({ easingType: 'easeOutQuart' });
         });
     </script>
-    <script type="text/javascript">
-        swal("Success", "Successfully Loged In", "success");
-    </script>
+    @*<script type="text/javascript">
+            swal("Success", "Successfully Loged In", "success");
+        </script>*@
     <!-- //smooth scrolling -->
     <!-- for bootstrap working -->
     <script src="js/bootstrap.js"></script>

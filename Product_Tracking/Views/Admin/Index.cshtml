@@ -62,7 +62,7 @@
             </div>
         </div><!--/.row-->
     </div>
-    
+
     <div class="row">
         <div class="col-xs-6 col-md-3">
             <div class="panel panel-default">
@@ -97,28 +97,30 @@
             </div>
         </div>
     </div><!--/.row-->
-    
+
 </div>
 @{
+
     var message = "Following product are expiring today: ";
     List<string> productexplst = TempData["productexplst"] as List<string>;
     bool? loginStatus = Convert.ToBoolean(TempData["loginStatus"]);
-    if (productexplst != null)
-    {
-        foreach (var data in productexplst)
-        {
-            message = message + data + ", ";
-        }
-        <script type="text/javascript">
-            @*alert('@message');*@
-            swal("Product Expire Alert!", '@message' , "info");
-        </script>
-    }
+    
     if (loginStatus != null && loginStatus.Value)
     {
         <script type="text/javascript">
             swal("Success", "Successfully Loged In", "success");
         </script>
+        if (productexplst != null)
+        {
+            foreach (var data in productexplst)
+            {
+                message = message + data + ", ";
+            }
+            <script type="text/javascript">
+            @*alert('@message');*@
+            swal("Product Expire Alert!", '@message' , "info");
+            </script>
+        }
     }
 
 }

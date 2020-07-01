@@ -18,7 +18,7 @@ namespace Product_Tracking.Controllers
         Product_TrackingEntities _db = new Product_TrackingEntities();
         // GET: Admin
         //[Route("Home")]
-        [Authorize]
+        [HttpGet]
         public ActionResult Index(bool? loginStatus)
         {
             if (Session["Photo"] != null)
@@ -39,7 +39,7 @@ namespace Product_Tracking.Controllers
                 }
                 //TempData["AlertMessage"] = "hello" + " " + "is expiring today";
                 Session["countusers"] = ViewBag.countuser;
-                Session["countdeals"] = ViewBag.countuser;
+                Session["countdeals"] = ViewBag.countdeals;
                 Session["category"] = ViewBag.category;
                 Session["store"] = ViewBag.store;
                 TempData["loginStatus"] = loginStatus;
@@ -73,12 +73,13 @@ namespace Product_Tracking.Controllers
         }
         public ActionResult CreateUser()
         {
-            ViewBag.UserRole = _db.tbl_Role.ToList();
+            InitCommon();
             return View();
         }
         [HttpPost]
         public ActionResult CreateUser(UserViewModel uvm)
         {
+            InitCommon();
             if (ModelState.IsValid)
             {
                 try
@@ -300,15 +301,8 @@ namespace Product_Tracking.Controllers
         public ActionResult EditDeals(int id)
         {
             tbl_Deals tb = _db.tbl_Deals.Where(p => p.DealsId == id).FirstOrDefault();
-            Deals pvm = new Deals();
-            if (tb.DealsId != null)
-            {
-                pvm.DealsId = tb.DealsId;
-            }
-            else
-            {
-                pvm.DealsId = 0;
-            }
+            Deals pvm = new Deals();            
+            pvm.DealsId = tb.DealsId;            
             pvm.DealsName = tb.DealsName;
             pvm.DealsDiscription = tb.DealsDiscription;
             pvm.DiscountPercent = tb.DiscountPercent;
@@ -499,7 +493,7 @@ namespace Product_Tracking.Controllers
                     tbl_Store store = _db.tbl_Store.Where(p => p.StoreId == svm.StoreId).FirstOrDefault();
                     store.StoreId = svm.StoreId;
                     store.StoreName = svm.StoreName;
-                    store.StoreLocation = svm.StoreName;
+                    store.StoreLocation = svm.StoreLocation;
                     store.StoreCapacity = svm.StoreCapacity;
                     _db.SaveChanges();
                     ViewBag.Message = "Store Updated Successfully.";
@@ -523,7 +517,7 @@ namespace Product_Tracking.Controllers
                 var dealsname = _db.tbl_Deals.Where(a => a.DealsId == item.DealsId).FirstOrDefault();
                 var categoryname = _db.tbl_ProductCategory.Where(a => a.CategoryId == item.CategoryId).FirstOrDefault();
                 var Statusname = _db.tbl_ProductStatus.Where(a => a.StatusId == item.StatusId).FirstOrDefault();
-                lst.Add(new ProductViewModel() { ProductId = item.ProductId, ProductName = item.ProductName, ProductDescription = item.ProductDescription, StoreName = storename.StoreName,DealsName = dealsname.DealsName,CategoryName = categoryname.CategoryName, StatusName = Statusname.StatusName, ProductPackingDate = item.ProductPackingDate, ProductExpireDate = item.ProductExpireDate});
+                lst.Add(new ProductViewModel() { ProductId = item.ProductId, ProductName = item.ProductName, ProductDescription = item.ProductDescription, StoreName = storename?.StoreName ,DealsName = dealsname?.DealsName , CategoryName = categoryname?.CategoryName, StatusName = Statusname?.StatusName, ProductPackingDate = item.ProductPackingDate, ProductExpireDate = item.ProductExpireDate});
             }
             return View(lst);
         }
@@ -535,6 +529,7 @@ namespace Product_Tracking.Controllers
 
         private void InitCommon()
         {
+            ViewBag.UserRole = _db.tbl_Role.ToList();
             ViewBag.CategoryName = _db.tbl_ProductCategory.ToList();
             ViewBag.DealsName = _db.tbl_Deals.ToList();
             ViewBag.storeName = _db.tbl_Store.ToList();
@@ -612,6 +607,8 @@ namespace Product_Tracking.Controllers
             pvm.DealsName = td.DealsName;
             tbl_ProductCategory tpc = _db.tbl_ProductCategory.Where(u => u.CategoryId == tb.CategoryId).FirstOrDefault();
             pvm.CategoryName = tpc.CategoryName;
+            tbl_ProductStatus tpss = _db.tbl_ProductStatus.Where(u => u.StatusId == tb.StatusId).FirstOrDefault();
+            pvm.StatusName = tpss.StatusName;
             tbl_ProductStore tps = _db.tbl_ProductStore.Where(u => u.ProductId == tb.ProductId).FirstOrDefault();
             tbl_Store ts = _db.tbl_Store.Where(u => u.StoreId == tps.StoreId).FirstOrDefault();
             pvm.StoreName = ts.StoreName;
